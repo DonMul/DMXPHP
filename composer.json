@@ -1,0 +1,19 @@
+{
+    "name": "jmul/dmx",
+    "description": "DMX interface for PHP",
+    "type": "library",
+    "authors": [
+        {
+            "name": "Joost Mul",
+            "email": "joost@jmul.net"
+        }
+    ],
+    "require": {
+        "php": ">=5.6"
+    },
+    "autoloader": {
+        "psr-4": {
+            "PHPDMX": ""
+        }
+    }
+}
