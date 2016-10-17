@@ -42,12 +42,11 @@ class PhpSerial
      *
      * @return PhpSerial
      */
-    public function PhpSerial()
+    public function __construct()
     {
         setlocale(LC_ALL, "en_US");
 
         $sysName = php_uname();
-
         if (substr($sysName, 0, 5) === "Linux") {
             $this->_os = "linux";
 

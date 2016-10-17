@@ -30,6 +30,11 @@ class Client
     const DMX_SIZE = 512;
 
     /**
+     * BAUD rate
+     */
+    const BAUDRATE = 57600;
+
+    /**
      * @var array
      */
     private $dmxMap = [];
@@ -40,31 +45,21 @@ class Client
     private $serialInstance;
 
     /**
-     * @var Client
+     * @var string
      */
-    private static $instance;
+    private $comPort = "COM1";
 
     /**
      * Client constructor.
      */
-    private function __construct()
+    public function __construct($comPort)
     {
+        $this->comPort = $comPort;
         for ($i = 0; $i < self::DMX_SIZE; $i++) {
             $this->dmxMap[$i] = 0;
         }
     }
 
-    /**
-     * @return Client
-     */
-    public static function getInstance()
-    {
-        if (!(self::$instance instanceof Client)) {
-            self::$instance = new self();
-        }
-
-        return self::$instance;
-    }
 
     /**
      * @return PhpSerial
@@ -73,8 +68,8 @@ class Client
     {
         if (!($this->serialInstance instanceof PhpSerial)) {
             $this->serialInstance = new PhpSerial();
-            $this->serialInstance->deviceSet(Settings::$comPort);
-            $this->serialInstance->confBaudRate(Settings::$baudRate);
+            $this->serialInstance->deviceSet($this->comPort);
+            $this->serialInstance->confBaudRate(self::BAUDRATE);
 
             $this->serialInstance->deviceOpen();
         }
@@ -120,7 +115,7 @@ class Client
     }
 
     /**
-     *
+     * Ensures the connection to the COMport is closed when this class is destructed.
      */
     public function __destruct()
     {
