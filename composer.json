@@ -1,11 +1,12 @@
 {
-    "name": "jmul/dmx",
+    "name": "jmul/dmxphp",
     "description": "DMX interface for PHP",
     "type": "library",
     "authors": [
         {
             "name": "Joost Mul",
-            "email": "joost@jmul.net"
+            "email": "joost@jmul.net",
+            "homepage": "http://jmul.net"
         }
     ],
     "require": {
