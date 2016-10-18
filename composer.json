@@ -2,6 +2,7 @@
     "name": "jmul/dmxphp",
     "description": "DMX interface for PHP",
     "type": "library",
+    "license": "GPL-3.0",
     "authors": [
         {
             "name": "Joost Mul",

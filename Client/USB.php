@@ -12,7 +12,7 @@ use DMXPHP\PhpSerial;
  * @package DMXPHP
  * @author Joost Mul <joost@jmul.net>
  */
-class USB implements IClient
+final class USB implements IClient
 {
     /**
      * Start of a DMX message

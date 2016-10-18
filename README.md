@@ -1,4 +1,5 @@
 # DMX PHP
+[![License](https://img.shields.io/badge/licence-GPLv3-brightgreen.svg)](https://tldrlegal.com/license/gnu-general-public-license-v3-(gpl-3))
 DMX PHP is writter because i wanted to experiment with DMX and see the capabilities within the language of PHP.
 
 This implementation has not yet been tested since i haven't come round to it. If anyone can test it, please let me know your findings.

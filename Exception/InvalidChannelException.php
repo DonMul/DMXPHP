@@ -7,7 +7,7 @@ namespace DMXPHP\Exception;
  * @package DMXPHP\Exception
  * @author Joost Mul <joost@jmul.net>
  */
-class InvalidChannelException extends \Exception
+final class InvalidChannelException extends \Exception
 {
     /**
      * Error code for this exceptoin

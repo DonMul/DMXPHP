@@ -7,7 +7,7 @@ namespace DMXPHP\Exception;
  * @package DMXPHP\Exception
  * @author Joost Mul <joost@jmul.net>
  */
-class InvalidEntityException extends \Exception
+final class InvalidEntityException extends \Exception
 {
     /**
      * Error code for this Exception

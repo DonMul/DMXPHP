@@ -6,6 +6,7 @@ use DMXPHP\Exception\EntityNotFoundException;
 use DMXPHP\Exception\InvalidEntityException;
 use DMXPHP\Exception\InvalidJsonException;
 use DMXPHP\Exception\MalformedEntityException;
+use DMXPHP\Entity\Base;
 
 /**
  * Class representing a DMX Universe (with a max of 512 channels)
@@ -13,12 +14,12 @@ use DMXPHP\Exception\MalformedEntityException;
  * @package DMXPHP
  * @author Joost Mul <joost@jmul.net>
  */
-class Universe
+final class Universe
 {
     /**
      * An array of entities within this universe
      *
-     * @var Entity[]
+     * @var IEntity[]
      */
     private $entities = [];
 
@@ -32,22 +33,26 @@ class Universe
     /**
      * Creator of a DMX Universe
      *
-     * @param Entity[]  $entities   All DMX entities within this universe. These can also be added later on
+     * @param IEntity[]  $entities   All DMX entities within this universe. These can also be added later on
      * @param IClient    $client     The client used to send DMX signals with
-     *
-     * @throws InvalidEntityException If an entity given is not of class Entity
      */
     public function __construct($entities, IClient $client)
     {
         $this->client = $client;
 
         foreach ($entities as $entity) {
-            if (!($entity instanceof Entity)) {
-                throw new InvalidEntityException();
-            }
-
-            $this->entities[] = $entity;
+            $this->addEntity($entity);
         }
+    }
+
+    /**
+     * Adds an Entity to this universe
+     *
+     * @param IEntity $entity The entity to add
+     */
+    public function addEntity(IEntity $entity)
+    {
+        $this->entities[] = $entity;
     }
 
     /**
@@ -55,7 +60,7 @@ class Universe
      *
      * @param int $channel The entity listening on this channel
      *
-     * @return Entity The entity listening on the given channel
+     * @return IEntity The entity listening on the given channel
      *
      * @throws EntityNotFoundException When the entity is not found
      */
@@ -104,12 +109,18 @@ class Universe
     public static function createFromArray($array, IClient $client)
     {
         $entities = [];
+        $universe = new self([], $client);
         foreach ($array as $entity) {
             if (!isset($entity['startChannel'])) {
                 throw new MalformedEntityException();
             }
 
-            $entityObj = new Entity(
+            $type = isset($entity['type']) ? $entity['type'] : '';
+
+            /**
+             * @type IEntity $entityObj
+             */
+            $entityObj = new $type(
                 $client,
                 $entity['startChannel'],
                 $entity['channels'],
@@ -120,10 +131,10 @@ class Universe
                 $entityObj->loadChannelValues($entity['channelValues'], false);
             }
 
-            $entities[] = $entityObj;
+            $universe->addEntity($entityObj);
         }
 
-        return new self($entities, $client);
+        return $universe;
     }
 
     /**

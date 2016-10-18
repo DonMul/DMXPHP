@@ -1,9 +1,11 @@
 <?php
 
-namespace DMXPHP;
+namespace DMXPHP\Entity;
 
 use DMXPHP\Exception\InvalidChannelException;
 use DMXPHP\Exception\InvalidChannelValueException;
+use DMXPHP\IClient;
+use DMXPHP\IEntity;
 
 /**
  * An entity within the DMX Universe. An entity could span over multiple channels
@@ -11,7 +13,7 @@ use DMXPHP\Exception\InvalidChannelValueException;
  * @package DMXPHP
  * @author Joost Mul <joost@jmul.net>
  */
-class Entity
+abstract class Base implements IEntity
 {
     /**
      * The maximum value of a channel on DMX
@@ -108,6 +110,7 @@ class Entity
             'channels' => $this->channels,
             'name' => $this->name,
             'channelValues' => $this->channelValues,
+            'type' => get_called_class(),
         ];
     }
 

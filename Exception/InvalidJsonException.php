@@ -7,7 +7,7 @@ namespace DMXPHP\Exception;
  * @package DMXPHP\Exception
  * @author Joost Mul <joost@jmul.net>
  */
-class InvalidJsonException extends \Exception
+final class InvalidJsonException extends \Exception
 {
     /**
      * Error code for this exception

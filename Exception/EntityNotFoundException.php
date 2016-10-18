@@ -7,7 +7,7 @@ namespace DMXPHP\Exception;
  * @package DMXPHP\Exception
  * @author Joost Mul <joost@jmul.net>
  */
-class EntityNotFoundException extends \Exception
+final class EntityNotFoundException extends \Exception
 {
     /**
      * Error codoe for this Exception

@@ -7,7 +7,7 @@ namespace DMXPHP\Exception;
  * @package DMXPHP\Exception
  * @author Joost Mul <joost@jmul.net>
  */
-class MalformedEntityException extends \Exception
+final class MalformedEntityException extends \Exception
 {
     /**
      * Error code for this exception
