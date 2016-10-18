@@ -1,13 +1,18 @@
 <?php
 
-namespace DMXPHP;
+namespace DMXPHP\Client;
+
+use DMXPHP\IClient;
+use DMXPHP\PhpSerial;
 
 /**
- * Class Client
+ * The client used to send the DMX signals with. This client should'nt be used directly. Use the Entity and universe
+ * objects insted if you want to control your DMX devices.
+ *
  * @package DMXPHP
  * @author Joost Mul <joost@jmul.net>
  */
-class Client
+class USB implements IClient
 {
     /**
      * Start of a DMX message
@@ -35,26 +40,35 @@ class Client
     const BAUDRATE = 57600;
 
     /**
+     * Array containing all 512 channels and all of their current values.
+     *
      * @var array
      */
     private $dmxMap = [];
 
     /**
+     * Used to write to a Serial port.
+     *
      * @var PhpSerial
      */
     private $serialInstance;
 
     /**
+     * The port that the DMX USB device is connected to.
+     *
      * @var string
      */
     private $comPort = "COM1";
 
     /**
-     * Client constructor.
+     * USB Client constructor.
+     *
+     * @param string $comPort The COMport the DMX USB Device is connected to
      */
     public function __construct($comPort)
     {
         $this->comPort = $comPort;
+
         for ($i = 0; $i < self::DMX_SIZE; $i++) {
             $this->dmxMap[$i] = 0;
         }
@@ -62,6 +76,8 @@ class Client
 
 
     /**
+     * Returns the serial writer for the DMX connection.
+     *
      * @return PhpSerial
      */
     private function getSerialWriter()
@@ -78,22 +94,31 @@ class Client
     }
 
     /**
-     * @param int $channel
-     * @param int $value
+     * Updates the given channel to the given value.
+     *
+     * @param int $channel The channel to update.
+     * @param int $value   The value to set the channel to.
      */
     public function updateChannel($channel, $value)
     {
-        $this->writeToDmx($channel, $value);
+        $this->dmxMap[$channel] = $value;
+        $this->writeToDmx();
+    }
+
+    public function updateMultipleChannels($channelValues)
+    {
+        foreach ($channelValues as $channel => $value) {
+            $this->dmxMap[$channel] = $value;
+        }
+
+        $this->writeToDmx();
     }
 
     /**
-     * @param int $channel
-     * @param int $value
+     * Send the current DMX map to the physical DMX universe
      */
-    private function writeToDmx($channel, $value)
+    private function writeToDmx()
     {
-        $this->dmxMap[$channel] = $value;
-
         $packet = [
             self::START_VAL,
             self::DMX_PACKET,
